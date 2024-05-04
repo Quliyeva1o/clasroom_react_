@@ -1,4 +1,4 @@
-export const BASE_URL ="https://clasroom-api.vercel.app"
+export const BASE_URL ="http://localhost:3000"
 
 const endpoints={
     teachers:"/teachers",

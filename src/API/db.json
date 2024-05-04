@@ -1,0 +1,83 @@
+{
+  "teachers": [
+    {
+      "id": "1nmdd",
+      "fullName": "Elnur Xəlilov",
+      "username": "elnurxo",
+      "email": "elnurxo@gmail.com",
+      "password": "elnur123",
+      "major": "Front-End",
+      "profileImage": "typicode"
+    },
+    {
+      "id": "2vfdvd",
+      "fullName": "Gulshan Zalova",
+      "username": "gulshen",
+      "email": "gulshen@gmail.com",
+      "password": "gulsen123",
+      "major": "Front-End",
+      "profileImage": "typicode"
+    }
+  ],
+  "students": [
+    {
+      "id": "1hhbg323",
+      "fullName": "Laman",
+      "username": "Laman",
+      "email": "lman@gamil.com",
+      "password": "Leman123",
+      "profileImage ": "1hudhd",
+      "grades": [
+        {
+          "taskId": "1",
+          "grade": 100
+        }
+      ]
+    },
+    {
+      "id": "3jwe2",
+      "fullName": "Rəna",
+      "username": "Quliyeva1o",
+      "email": "reiyna@gamil.com",
+      "password": "Rena123",
+      "profileImage ": "1hudhd",
+      "grades": [
+        {
+          "taskId": "1",
+          "grade": 100
+        }
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "id": "1",
+      "title": "task2",
+      "description": "Classroom react",
+      "topic": "elnur muellimin verdiyi task",
+      "deadline": 345,
+      "createdAt": 3843,
+      "teacherId": "1nmdd",
+      "assignments": [
+        {
+          "student": "1hhbg323",
+          "url": "lemanin taski"
+        },
+        {
+          "student": "3jwe2",
+          "url": "renanin taski"
+        }
+      ]
+    },
+    {
+      "id": "43rjd",
+      "title": "task2",
+      "description": "2gunduu yatmiriq,qiymetlendirende onu nezere alib qiymetlendirin plss))",
+      "topic": "gulsen muelllimenin atigi task",
+      "deadline": 8779,
+      "createdAt": 3843,
+      "teacherId": "2vfdvd",
+      "assignments": []
+    }
+  ]
+}

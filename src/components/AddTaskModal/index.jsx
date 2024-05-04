@@ -3,13 +3,16 @@ import { Button, Modal, Checkbox, Form, Input } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import { DatePicker } from 'antd';
 import moment from 'moment';
-import { post } from '../../API';
+import { post } from '../../API/index.js';
 import endpoints from '../../API/constants';
+import { getAll } from '../../API';
+
 const { RangePicker } = DatePicker;
 
-const AddTaskModal = () => {
+const AddTaskModal = ({ onTaskAdded }) => { 
   const [open, setOpen] = useState(false);
   const [datestring, setDateString] = useState("");
+  const [tasks, setTasks] = useState([]); 
 
   let loggedinuser = JSON.parse(localStorage.getItem("loggedinuser"))
   const showModal = () => {
@@ -18,15 +21,18 @@ const AddTaskModal = () => {
   const onFinish =  (values) => {
     setOpen(false);
     console.log(values);
-    const updatedValues = { ...values, deadline: datestring, teacherId: loggedinuser.id, createdAt: moment(new Date()).format('lll'), assignments: [] };
+    let updatedValues = { ...values, deadline: datestring, teacherId: loggedinuser.id, createdAt: moment(new Date()).format('lll'), assignments: [] };
     console.log(datestring);
     console.log(updatedValues);
 
-    post(endpoints.tasks, updatedValues).then((res) => {
-      console.log(res.data);
-    }).catch((err) => {
-      console.log(err);
-    });
+    post(endpoints.tasks, updatedValues)
+      .then((res) => {
+        console.log(res);
+        onTaskAdded(); 
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
   };
   const onFinishFailed = (errorInfo) => {
@@ -43,6 +49,12 @@ const AddTaskModal = () => {
     setOpen(false);
   };
 
+  useEffect(() => {
+    getAll(endpoints.tasks).then((res) => {
+      setTasks(res.data);
+    });
+  }, [open]); 
+
   return (
     <>
       <Button type="primary" onClick={showModal}>
@@ -50,7 +62,7 @@ const AddTaskModal = () => {
       </Button>
       <Modal
         title="Title"
-        visible={open}
+        open={open}
         onCancel={handleCancel}
         footer={null}
       >

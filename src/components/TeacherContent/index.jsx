@@ -14,25 +14,41 @@ const TeacherContent = () => {
   const [selectedAssignments, setSelectedAssignments] = useState([]);
 
   useEffect(() => {
+    fetchTasks();
+    fetchStudents();
+    fetchTeachers();
+  }, []);
+
+  const fetchTasks = () => {
     getAll(endpoints.tasks).then((res) => {
       setTasks(res.data);
     });
+  };
+
+  const fetchStudents = () => {
     getAll(endpoints.students).then((res) => {
       setStudents(res.data);
     });
+  };
+
+  const fetchTeachers = () => {
     getAll(endpoints.teachers).then((res) => {
       setTeachers(res.data);
     });
-  }, []);
+  };
 
   const handleAssignmentClick = (assignments) => {
     setSelectedAssignments(assignments);
     setModalVisible(true);
   };
 
+  const handleTaskAdded = () => {
+    fetchTasks(); // Yeni görev eklendiğinde görevleri yeniden al
+  };
+
   return (
     <>
-      <AddTaskModal />
+      <AddTaskModal onTaskAdded={handleTaskAdded} /> {/* AddTaskModal bileşenine onTaskAdded prop'unu ekle */}
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         {tasks.map((task) => {
           const teacher = teachers.find((teacher) => teacher.id === task.teacherId);
@@ -54,7 +70,7 @@ const TeacherContent = () => {
       </div>
       <Modal
         title="Task Responses"
-        visible={modalVisible}
+        open={modalVisible}
         onCancel={() => setModalVisible(false)}
         footer={[
           <Button key="cancel" onClick={() => setModalVisible(false)}>Close</Button>,
