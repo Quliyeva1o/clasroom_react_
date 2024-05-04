@@ -69,9 +69,6 @@ const TeacherRegister = () => {
         reader.onload = () => {
             const base64Image = reader.result;
             updatedValues.profileImage = base64Image;
-
-
-            
             post(endpoints.teachers, updatedValues).then((res) => {
                 console.log(res.data);
             }).catch((err) => {

@@ -8,20 +8,6 @@ import Login from '../Login.jsx/index.jsx'
 import StudentContent from '../StudentContent/index.jsx'
 
 const MyContent = ({ id }) => {
-    const [tasks, setTasks] = useState([])
-    const [students, setStudents] = useState([])
-    const [teachers, setTeachers] = useState([])
-    useEffect(() => {
-        getAll(endpoints.tasks).then((res) => {
-            setTasks(res.data)
-        })
-        getAll(endpoints.students).then((res) => {
-            setStudents(res.data);
-        });
-        getAll(endpoints.teachers).then((res) => {
-            setTeachers(res.data);
-        });
-    }, [tasks])
 
 
 
@@ -33,9 +19,9 @@ const MyContent = ({ id }) => {
         <>
              {id == 1 ?
                 loggedinUserLocal && loggedinUserLocal.id !== "" ? 
-                    loggedinUserLocal.isTeacher ? <TeacherContent tasks={tasks} teachers={teachers} students={students}/> : <StudentContent />
-                : <Login students={students} teachers={teachers} />
-            : id == 2 ? <Register /> : <Login students={students} teachers={teachers}  />}
+                    loggedinUserLocal.isTeacher ? <TeacherContent /> : <StudentContent />
+                : <Login  />
+            : id == 2 ? <Register /> : <Login  />}
         </>
     )
 }

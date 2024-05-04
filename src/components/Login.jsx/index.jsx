@@ -1,11 +1,27 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input } from 'antd';
+import { getAll } from '../../API';
+import endpoints from '../../API/constants';
 
 
 
-const Login = ({students , teachers}) => {
-   
+const Login = () => {
+    const [tasks, setTasks] = useState([])
+    const [students, setStudents] = useState([])
+    const [teachers, setTeachers] = useState([])
+    useEffect(() => {
+        getAll(endpoints.tasks).then((res) => {
+            setTasks(res.data)
+        })
+        getAll(endpoints.students).then((res) => {
+            setStudents(res.data);
+        });
+        getAll(endpoints.teachers).then((res) => {
+            setTeachers(res.data);
+        });
+    }, [])
+
     const [loggedinUser, setLoggedinUser] = useState({ id: "", isTeacher: false })
     localStorage.setItem("loggedinuser", JSON.stringify({ id: loggedinUser.id, isTeacher: loggedinUser.isTeacher }));
 

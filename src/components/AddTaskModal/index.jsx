@@ -1,34 +1,41 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Modal, Checkbox, Form, Input } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import { DatePicker } from 'antd';
 import moment from 'moment';
+import { post } from '../../API';
+import endpoints from '../../API/constants';
 const { RangePicker } = DatePicker;
 
 const AddTaskModal = () => {
   const [open, setOpen] = useState(false);
-  const [confirmLoading, setConfirmLoading] = useState(false);
+  const [datestring, setDateString] = useState("");
 
+  let loggedinuser = JSON.parse(localStorage.getItem("loggedinuser"))
   const showModal = () => {
     setOpen(true);
   };
-
-  const onFinish = (values) => {
-    console.log('Success:', values);
+  const onFinish =  (values) => {
     setOpen(false);
-  };
+    console.log(values);
+    const updatedValues = { ...values, deadline: datestring, teacherId: loggedinuser.id, createdAt: moment(new Date()).format('lll'), assignments: [] };
+    console.log(datestring);
+    console.log(updatedValues);
 
+    post(endpoints.tasks, updatedValues).then((res) => {
+      console.log(res.data);
+    }).catch((err) => {
+      console.log(err);
+    });
+
+  };
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
 
-  const onChange = (dates, dateStrings) => {
-    if (dates) {
-      console.log('From: ', dates[0], ', to: ', dates[1]);
-      console.log('From: ', dateStrings[0], ', to: ', dateStrings[1]);
-    } else {
-      console.log('Clear');
-    }
+  const onChange = (date, dateString) => {
+    console.log(date, dateString);
+    setDateString(moment(dateString).format('lll'))
   };
 
   const handleCancel = () => {
@@ -44,7 +51,6 @@ const AddTaskModal = () => {
       <Modal
         title="Title"
         visible={open}
-        confirmLoading={confirmLoading}
         onCancel={handleCancel}
         footer={null}
       >
@@ -104,16 +110,8 @@ const AddTaskModal = () => {
           >
             <TextArea />
           </Form.Item>
+          <DatePicker onChange={onChange} showTime needConfirm={false} />
 
-          <RangePicker
-            ranges={{
-              Today: [moment(), moment()],
-              'This Month': [moment().startOf('month'), moment().endOf('month')],
-            }}
-            showTime
-            format="YYYY/MM/DD HH:mm:ss"
-            onChange={onChange}
-          />
 
           <Form.Item
             wrapperCol={{
