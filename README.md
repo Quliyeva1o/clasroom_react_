@@ -1,4 +1,4 @@
-https://clasroom-react-a34849l4c-reiynas-projects.vercel.app/
+https://clasroom-react.vercel.app/
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
