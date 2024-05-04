@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Card, Modal, Button } from 'antd';
+import AddTaskModal from '../AddTaskModal';
 
 const { Meta } = Card;
 
-const TeacherContent = ({ tasks }) => {
+const TeacherContent = ({ tasks, teachers, students }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedAssignments, setSelectedAssignments] = useState([]);
 
@@ -13,40 +14,48 @@ const TeacherContent = ({ tasks }) => {
   };
 
   return (
+    <>
+    <AddTaskModal/>
     <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-      {tasks.map(task => (
-        <Card
-          key={task.id}
-          style={{ width: 300, margin: '0 10px 20px 10px' }}
-          actions={[
-            <a href="#">Detaylar</a>,
-            <Button onClick={() => handleAssignmentClick(task.assignments)}>Ödev</Button>
-          ]}
-        >
-          <Meta title={task.title} description={task.description} />
-          <p>Öğretmen: {task.teacherId}</p>
-          <p>Ödevler: {task.assignments.length}</p>
-        </Card>
-      ))}
+      {tasks.map(task => {
+        const teacher = teachers.find(teacher => teacher.id === task.teacherId);
+        return (
+          <Card
+            key={task.id}
+            style={{ width: 300, margin: '0 10px 20px 10px' }}
+            actions={[
+              <a href="#">edit task</a>,
+              <Button onClick={() => handleAssignmentClick(task.assignments)}>Show responses</Button>
+            ]}
+          >
+            <Meta title={task.title} description={task.description} />
+            <p>Teacher: {teacher ? teacher.fullName : 'no teacher'}</p>
+            <p>Show responses: {task.assignments.length}</p>
+          </Card>
+        );
+      })}
 
       <Modal
-        title="Ödev Detayları"
+        title="Task Responses"
         visible={modalVisible}
         onCancel={() => setModalVisible(false)}
         footer={[
-          <Button key="cancel" onClick={() => setModalVisible(false)}>Kapat</Button>
+          <Button key="cancel" onClick={() => setModalVisible(false)}>Close</Button>
         ]}
       >
-        {selectedAssignments.map((assignment, index) => (
-         <>
-          <div key={index}>
-            <p>Student id: {assignment.student}</p>
-            <p>Ödev URL: <a href={assignment.url}>{assignment.url}</a></p>
-          </div>
-          <hr/></>
-        ))}
+
+        {selectedAssignments.map((assignment, index) => {
+          const myStudent = students.find(stud => stud.id === assignment.student)
+          return (
+
+            <div key={index}>
+              <p>Student id: {myStudent.fullName}</p>
+              <p>Work URL: <a href={assignment.url}>{assignment.url}</a></p>
+            </div>
+          )
+        })}
       </Modal>
-    </div>
+    </div></>
   );
 }
 

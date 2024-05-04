@@ -13,7 +13,6 @@ export class Teacher {
     }
 }
 
-
 export class Student {
     constructor(fullName, username, email, password, profileImage) {
         this.id = nanoid()

@@ -1,11 +1,50 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input } from 'antd';
 
-const Login = () => {
+
+
+const Login = ({students , teachers}) => {
+   
+    const [loggedinUser, setLoggedinUser] = useState({ id: "", isTeacher: false })
+    localStorage.setItem("loggedinuser", JSON.stringify({ id: loggedinUser.id, isTeacher: loggedinUser.isTeacher }));
+
+ 
     const onFinish = (values) => {
-        console.log('Received values of form: ', values);
-    };
+
+        const foundStudent = students.find(student => student.username === values.username);
+        if (foundStudent) {
+
+            if (foundStudent.password == values.password) {
+                setLoggedinUser({ id: foundStudent.id, isTeacher: false });
+                alert("studentlogedin")
+            } else {
+                alert("bele student yoxdur")
+            }
+
+        } else {
+            const foundTeacher = teachers.find(teacher => teacher.username === values.username);
+            if (foundTeacher) {
+
+                if (foundTeacher.password == values.password) {
+                    setLoggedinUser({ id: foundTeacher.id, isTeacher: true });
+                    alert("teacherloggedin")
+                } else {
+                    alert("bele teacher yoxdur")
+                }
+
+            } else {
+                localStorage.setItem("loggedinuser", JSON.stringify({ id:"", isTeacher: false }));
+
+                alert("istifadeci adi ve ya sifre yalnisdir")
+            }
+        };
+
+        console.log(loggedinUser);
+        
+        localStorage.setItem("loggedinuser", JSON.stringify({ id: loggedinUser.id, isTeacher: loggedinUser.isTeacher }));
+    }
+
     return (
         <Form
             name="normal_login"
@@ -46,14 +85,14 @@ const Login = () => {
                     <Checkbox>Remember me</Checkbox>
                 </Form.Item>
 
-              
+
             </Form.Item>
 
             <Form.Item>
                 <Button type="primary" htmlType="submit" className="login-form-button" >
                     Log in
                 </Button>
-            
+
             </Form.Item>
         </Form>
     )

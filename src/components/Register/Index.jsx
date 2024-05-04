@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Tabs } from 'antd';
-import TeacherRegister from '../TeacherRegister/index.jsx';
 import StudentRegister from '../StudentRegister/index.jsx';
+
+import TeacherRegister from '../TeacherRegister/index.jsx';
 const Register = () => {
     const [tabId, setTabId] = useState("student")
     const items = [
