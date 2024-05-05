@@ -8,15 +8,19 @@ const { Meta } = Card;
 
 const StudentContent = () => {
   const [tasks, setTasks] = useState([]);
+  const [students, setStudents] = useState([]);
   const [teachers, setTeachers] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
   const [isAssigned, setIsAssigned] = useState(false);
   const [urlInput, setUrlInput] = useState('');
 
+ 
   useEffect(() => {
     fetchTasks();
     fetchTeachers();
+    fetchStudents()
+
   }, []);
 
   const fetchTasks = () => {
@@ -30,6 +34,15 @@ const StudentContent = () => {
       setTeachers(res.data);
     });
   };
+  const fetchStudents = () => {
+    getAll(endpoints.students).then((res) => {
+      setStudents(res.data);
+    });
+  };
+
+
+
+  
 
   const handleAssign = (taskId) => {
     getOne(endpoints.tasks, taskId).then((res) => {

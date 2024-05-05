@@ -25,7 +25,14 @@ export class Student {
         this.grades = []
         
     }
-    // calcAvgMethod() {}
+    // calcAvgMethod() {
+    //     if (this.grades.length === 0) {
+    //         return 0;
+    //     }
+    //     const totalGrades = this.grades.reduce((sum, grade) => sum + parseInt(grade.grade), 0);
+    //     const avgGrade = totalGrades / this.grades.length;
+    //     return avgGrade;
+    // }
 }
 
 export class Task {
@@ -37,6 +44,7 @@ export class Task {
         this.deadline = deadline
         this.createdAt =  moment(new Date()).format('lll')
         this.teacherId = teacherId
+        this.assignments=[]
        
 
     }

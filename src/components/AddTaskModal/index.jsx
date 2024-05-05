@@ -20,7 +20,7 @@ const AddTaskModal = ({ onTaskAdded }) => {
     setOpen(true);
   };
   const onFinish =  (values) => {
-    setOpen(false);
+    setOpen(false); 
    const ts=new Task(values.title,values.description,values.topic,datestring,loggedinuser.id)
     post(endpoints.tasks, ts)
       .then((res) => {

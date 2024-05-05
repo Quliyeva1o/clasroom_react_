@@ -38,11 +38,7 @@
       "profileImage ": "1hudhd",
       "grades": [
         {
-          "grade": "10",
-          "taskid": "1"
-        },
-        {
-          "grade": "10",
+          "grade": "100",
           "taskid": "1"
         }
       ]
@@ -60,7 +56,7 @@
       "assignments": [
         {
           "student": "3jwe2",
-          "url": "aaaaaaaaaaaaa",
+          "url": "cxcx",
           "taskid": "1"
         }
       ]
@@ -76,7 +72,7 @@
       "assignments": [
         {
           "student": "3jwe2",
-          "url": "aaaaaaaaaaaaa",
+          "url": "sjsj",
           "taskid": "43rjd"
         }
       ]
