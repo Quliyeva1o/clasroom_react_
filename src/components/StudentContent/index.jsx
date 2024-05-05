@@ -8,29 +8,20 @@ const { Meta } = Card;
 
 const StudentContent = () => {
   const [tasks, setTasks] = useState([]);
-  const [students, setStudents] = useState([]);
   const [teachers, setTeachers] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
-  const [selectedAssignments, setSelectedAssignments] = useState([]);
-  const [urlInput, setUrlInput] = useState('');
-  const [selectedTaskId, setSelectedTaskId] = useState(null);
   const [selectedTask, setSelectedTask] = useState(null);
+  const [isAssigned, setIsAssigned] = useState(false);
+  const [urlInput, setUrlInput] = useState('');
 
   useEffect(() => {
     fetchTasks();
-    fetchStudents();
     fetchTeachers();
   }, []);
 
   const fetchTasks = () => {
     getAll(endpoints.tasks).then((res) => {
       setTasks(res.data);
-    });
-  };
-
-  const fetchStudents = () => {
-    getAll(endpoints.students).then((res) => {
-      setStudents(res.data);
     });
   };
 
@@ -41,36 +32,32 @@ const StudentContent = () => {
   };
 
   const handleAssign = (taskId) => {
-    setSelectedTaskId(taskId);
-       
-    setModalVisible(true);
+    getOne(endpoints.tasks, taskId).then((res) => {
+      setSelectedTask(res.data);
+      const loggedinUser = JSON.parse(localStorage.getItem("loggedinuser"));
+      const isAssigned = res.data.assignments.some((assignment) => assignment.student === loggedinUser.id);
+      setIsAssigned(isAssigned);
+      setModalVisible(true);
+    });
   };
-
-  getOne(endpoints.tasks,selectedTaskId).then((res)=>{
-    setSelectedTask(res.data)
-  })
-
 
   const handleUrlInputChange = (e) => {
     setUrlInput(e.target.value);
   };
 
-
-  const handleAddAssignment = () => {  
-    const loggedinUser = JSON.parse(localStorage.getItem("loggedinuser"))
-
-    let isAssigned
-    selectedTask ? isAssigned = selectedTask.assignments.some((assignment) => assignment.student === loggedinUser.id) : console.log(selectedTask);
-
-    isAssigned ? alert("artiq assign etmisiz") : patchOne(endpoints.tasks, selectedTaskId, {
+  const handleAddAssignment = () => {
+    const loggedinUser = JSON.parse(localStorage.getItem("loggedinuser"));
+    patchOne(endpoints.tasks, selectedTask.id, {
       "assignments": [...selectedTask.assignments, {
         "student": loggedinUser.id,
-        "url": urlInput
+        "url": urlInput,
+        "taskid": selectedTask.id,
       }]
-    })
-    setUrlInput("")
-    setModalVisible(false);
-
+    }).then(() => {
+      setUrlInput("");
+      setModalVisible(false);
+      fetchTasks(); 
+    });
   };
 
   return (
@@ -100,10 +87,11 @@ const StudentContent = () => {
         onCancel={() => setModalVisible(false)}
         footer={[
           <Button key="cancel" onClick={() => setModalVisible(false)}>Close</Button>,
-          <Button key="submit" type="primary" onClick={handleAddAssignment}>Add</Button>,
+          <Button key="submit" type="primary" onClick={handleAddAssignment} disabled={isAssigned}>Add</Button>,
         ]}
       >
-        <Input placeholder="Enter URL" value={urlInput} onChange={handleUrlInputChange} />
+        <div>{isAssigned ? <p>You are already assigned to this task</p> : <Input placeholder="Enter URL" value={urlInput} onChange={handleUrlInputChange} />
+        }</div>
       </Modal>
     </>
   );

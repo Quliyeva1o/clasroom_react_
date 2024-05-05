@@ -37,7 +37,7 @@ export class Task {
         this.deadline = deadline
         this.createdAt =  moment(new Date()).format('lll')
         this.teacherId = teacherId
-        this.assignments = []
+       
 
     }
 }

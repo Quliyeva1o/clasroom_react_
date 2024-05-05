@@ -9,6 +9,7 @@ import {
 import { post } from '../../API';
 import endpoints from '../../API/constants';
 import { Student } from '../../classes/classes';
+import Swal from 'sweetalert2';
 
 const StudentRegister = () => {
     const [fileList, setFileList] = useState([]);
@@ -58,16 +59,28 @@ const StudentRegister = () => {
         reader.readAsDataURL(uploadedFile.originFileObj);
         reader.onload = () => {
             const base64Image = reader.result;
-            const st = new Student(values.fullName, values.username, values.email,values.password, base64Image)
-            console.log("st",st);
-            post(endpoints.students, st).then((res) => {
-                console.log(res.data);
-            }).catch((err) => {
-                console.log(err);
-            });
+            const st = new Student(values.fullName, values.username, values.email, values.password, base64Image);
+            console.log("st", st);
+            post(endpoints.students, st)
+                .then((res) => {
+                    console.log(res.data);
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: "You are registered",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                   
+                    form.resetFields();
+                    setFileList([]); 
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
         };
-
     };
+    
 
     return (
         <Form

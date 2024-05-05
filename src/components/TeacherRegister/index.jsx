@@ -67,6 +67,16 @@ const TeacherRegister = () => {
             const tc = new Teacher(values.fullnxame,values.username,values.email,values.password,values.major,base64Image)
             post(endpoints.teachers, tc).then((res) => {
                 console.log(res.data);
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "You are registered",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+               
+                form.resetFields();
+                setFileList([]); 
             }).catch((err) => {
                 console.log(err);
             });

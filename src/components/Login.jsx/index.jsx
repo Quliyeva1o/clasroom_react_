@@ -3,6 +3,7 @@ import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input } from 'antd';
 import { getAll } from '../../API';
 import endpoints from '../../API/constants';
+import Swal from 'sweetalert2';
 
 const Login = ({ setTaskPanel }) => {
     const [tasks, setTasks] = useState([]);
@@ -25,7 +26,13 @@ const Login = ({ setTaskPanel }) => {
         const foundStudent = students.find((student) => student.username === values.username);
         if (foundStudent) {
             if (foundStudent.password === values.password) {
-                alert("Student logged in");
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Student logged in",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
                 setTaskPanel({ id: foundStudent.id, isTeacher:false });
                 localStorage.setItem("loggedinuser", JSON.stringify({ id: foundStudent.id, isTeacher: false }));
 
@@ -38,7 +45,13 @@ const Login = ({ setTaskPanel }) => {
                 if (foundTeacher.password === values.password) {
                     setTaskPanel({ id: foundTeacher.id, isTeacher: true });
                     localStorage.setItem("loggedinuser", JSON.stringify({ id: foundTeacher.id, isTeacher: true }));
-                    alert("Teacher logged in");
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: "Teacher logged in",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
                 } else {
                     alert("Incorrect password for teacher");
                 }
