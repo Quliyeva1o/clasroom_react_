@@ -7,12 +7,20 @@ import {
 import { Button, Layout, Menu, theme } from 'antd';
 import MyContent from '../MyContent.jsx';
 const { Header, Sider, Content } = Layout;
+
+
 const LayoutDesign = () => {
     const [collapsed, setCollapsed] = useState(false);
     const [selectedMenu, setSelectedMenu] = useState("1");
+    let loggedinUserLocal = JSON.parse(localStorage.getItem("loggedinuser"))
+    const [taskPanel, setTaskPanel] = useState(loggedinUserLocal ? loggedinUserLocal : false);
+
+
     const {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
+
+
     return (
         <div>
             <Layout>
@@ -26,11 +34,18 @@ const LayoutDesign = () => {
                         mode="inline"
                         defaultSelectedKeys={['1']}
                         items={[
-                            {
-                                key: '1',
+                            taskPanel ? {
+                                key: '3',
                                 icon: <LoginOutlined />,
-                                label: 'Login',
-                            },
+                                label: 'Out',
+                            }
+                                :
+                                {
+                                    key: '1',
+                                    icon: <LoginOutlined />,
+                                    label: 'Login',
+                                },
+                            ,
                             {
                                 key: '2',
                                 icon: <LoginOutlined />,
@@ -67,7 +82,7 @@ const LayoutDesign = () => {
                     }}
                     >
 
-                        <MyContent id={selectedMenu} />
+                        <MyContent taskPanel={taskPanel} setTaskPanel={setTaskPanel} id={selectedMenu} />
                     </Content>
                 </Layout>
             </Layout>

@@ -4,62 +4,50 @@ import { Button, Checkbox, Form, Input } from 'antd';
 import { getAll } from '../../API';
 import endpoints from '../../API/constants';
 
+const Login = ({ setTaskPanel }) => {
+    const [tasks, setTasks] = useState([]);
+    const [students, setStudents] = useState([]);
+    const [teachers, setTeachers] = useState([]);
+    const [loggedinUser, setLoggedinUser] = useState(null); // Define loggedinUser state
 
-
-const Login = () => {
-    const [tasks, setTasks] = useState([])
-    const [students, setStudents] = useState([])
-    const [teachers, setTeachers] = useState([])
     useEffect(() => {
         getAll(endpoints.tasks).then((res) => {
-            setTasks(res.data)
-        })
+            setTasks(res.data);
+        });
         getAll(endpoints.students).then((res) => {
             setStudents(res.data);
         });
         getAll(endpoints.teachers).then((res) => {
             setTeachers(res.data);
         });
-    }, [])
+    }, []);
 
-    const [loggedinUser, setLoggedinUser] = useState({ id: "", isTeacher: false })
-    localStorage.setItem("loggedinuser", JSON.stringify({ id: loggedinUser.id, isTeacher: loggedinUser.isTeacher }));
-
- 
     const onFinish = (values) => {
-
-        const foundStudent = students.find(student => student.username === values.username);
+        const foundStudent = students.find((student) => student.username === values.username);
         if (foundStudent) {
-
-            if (foundStudent.password == values.password) {
+            if (foundStudent.password === values.password) {
                 setLoggedinUser({ id: foundStudent.id, isTeacher: false });
-                alert("studentlogedin")
+                alert("Student logged in");
             } else {
-                alert("bele student yoxdur")
+                alert("Incorrect password for student");
             }
-
         } else {
-            const foundTeacher = teachers.find(teacher => teacher.username === values.username);
+            const foundTeacher = teachers.find((teacher) => teacher.username === values.username);
             if (foundTeacher) {
-
-                if (foundTeacher.password == values.password) {
+                if (foundTeacher.password === values.password) {
                     setLoggedinUser({ id: foundTeacher.id, isTeacher: true });
-                    alert("teacherloggedin")
+                    setTaskPanel({ id: foundTeacher.id, isTeacher: true });
+                    localStorage.setItem("loggedinuser", JSON.stringify({ id: foundTeacher.id, isTeacher: true }));
+                    alert("Teacher logged in");
                 } else {
-                    alert("bele teacher yoxdur")
+                    alert("Incorrect password for teacher");
                 }
-
             } else {
-                localStorage.setItem("loggedinuser", JSON.stringify({ id:"", isTeacher: false }));
-
-                alert("istifadeci adi ve ya sifre yalnisdir")
+                localStorage.setItem("loggedinuser", JSON.stringify({ id: "", isTeacher: false }));
+                alert("Username not found");
             }
-        };
-
-        console.log(loggedinUser);
-        
-        localStorage.setItem("loggedinuser", JSON.stringify({ id: loggedinUser.id, isTeacher: loggedinUser.isTeacher }));
-    }
+        }
+    };
 
     return (
         <Form
@@ -100,18 +88,14 @@ const Login = () => {
                 <Form.Item name="remember" valuePropName="checked" noStyle>
                     <Checkbox>Remember me</Checkbox>
                 </Form.Item>
-
-
             </Form.Item>
-
             <Form.Item>
-                <Button type="primary" htmlType="submit" className="login-form-button" >
+                <Button type="primary" htmlType="submit" className="login-form-button">
                     Log in
                 </Button>
-
             </Form.Item>
         </Form>
-    )
-}
+    );
+};
 
-export default Login
+export default Login;

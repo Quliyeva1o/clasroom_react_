@@ -7,21 +7,24 @@ import endpoints from '../../API/constants.js'
 import Login from '../Login.jsx/index.jsx'
 import StudentContent from '../StudentContent/index.jsx'
 
-const MyContent = ({ id }) => {
+const MyContent = ({ taskPanel, setTaskPanel, id }) => {
+
+
+    if (id == 3) {
+        setTaskPanel(false);
+        localStorage.setItem("loggedinuser", JSON.stringify({ id: "", isTeacher: false }));
+    }
 
 
 
-    let loggedinUserLocal = JSON.parse(localStorage.getItem("loggedinuser"))
-
-  
 
     return (
         <>
-             {id == 1 ?
-                loggedinUserLocal && loggedinUserLocal.id !== "" ? 
-                    loggedinUserLocal.isTeacher ? <TeacherContent /> : <StudentContent />
-                : <Login  />
-            : id == 2 ? <Register /> : <Login  />}
+            {id == 1 ?
+                taskPanel && taskPanel.id !== "" ?
+                    taskPanel.isTeacher ? <TeacherContent /> : <StudentContent />
+                    : <Login setTaskPanel={setTaskPanel} />
+                : id == 2 ? <Register /> : <Login />}
         </>
     )
 }
