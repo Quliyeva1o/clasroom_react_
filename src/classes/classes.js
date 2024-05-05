@@ -1,3 +1,4 @@
+import moment from "moment"
 import { nanoid } from "nanoid"
 
 export class Teacher {
@@ -22,10 +23,10 @@ export class Student {
         this.password = password
         this.profileImage = profileImage
         this.grades = []
+        
     }
+    // calcAvgMethod() {}
 }
-
-
 
 export class Task {
     constructor(title, description, topic, deadline, teacherId) {
@@ -34,11 +35,12 @@ export class Task {
         this.description = description
         this.topic = topic
         this.deadline = deadline
-        this.createdAt = new Date()
+        this.createdAt =  moment(new Date()).format('lll')
         this.teacherId = teacherId
         this.assignments = []
 
     }
 }
+
 
 

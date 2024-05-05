@@ -1,22 +1,19 @@
-import React, { useEffect, useState } from 'react'
-// import Login from '../Login.jsx'
+import React from 'react'
 import Register from '../Register/Index.jsx'
 import TeacherContent from '../TeacherContent/index.jsx'
-import { getAll } from '../../API/index.js'
-import endpoints from '../../API/constants.js'
+
 import Login from '../Login.jsx/index.jsx'
 import StudentContent from '../StudentContent/index.jsx'
 
-const MyContent = ({ taskPanel, setTaskPanel, id }) => {
+const MyContent = ({ taskPanel, setTaskPanel, id,setSelectedMenu }) => {
 
 
     if (id == 3) {
+        setSelectedMenu("1")
         setTaskPanel(false);
-        localStorage.setItem("loggedinuser", JSON.stringify({ id: "", isTeacher: false }));
+        localStorage.clear()
+
     }
-
-
-
 
     return (
         <>

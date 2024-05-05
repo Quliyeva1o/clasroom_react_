@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import { Upload } from 'antd';
 import ImgCrop from 'antd-img-crop';
 import {
-  Button,
-  Form,
-  Input,
-  Select,
+    Button,
+    Form,
+    Input,
+    Select,
 } from 'antd';
 import endpoints from '../../API/constants';
 import { post } from '../../API';
+import { Teacher } from '../../classes/classes';
 const { Option } = Select;
 
 const TeacherRegister = () => {
@@ -23,7 +24,7 @@ const TeacherRegister = () => {
 
 
 
-   
+
     const formItemLayout = {
         labelCol: {
             xs: {
@@ -58,27 +59,21 @@ const TeacherRegister = () => {
 
     const onFinish = (values) => {
         const uploadedFile = fileList[0];
-        const fileSrc = uploadedFile.url ? uploadedFile.url : URL.createObjectURL(uploadedFile.originFileObj);
-        const updatedValues = {
-            ...values,
-            imageSrc: fileSrc 
-        };
 
         const reader = new FileReader();
         reader.readAsDataURL(uploadedFile.originFileObj);
         reader.onload = () => {
             const base64Image = reader.result;
-            updatedValues.profileImage = base64Image;
-            post(endpoints.teachers, updatedValues).then((res) => {
+            const tc = new Teacher(values.fullnxame,values.username,values.email,values.password,values.major,base64Image)
+            post(endpoints.teachers, tc).then((res) => {
                 console.log(res.data);
             }).catch((err) => {
                 console.log(err);
             });
         };
 
-        console.log('posted teacher', updatedValues);
     };
-    
+
     return (
         <Form
             {...formItemLayout}
@@ -166,11 +161,11 @@ const TeacherRegister = () => {
             </Form.Item>
             <ImgCrop rotationSlider>
                 <Upload
-                   
+
                     listType="picture-card"
                     fileList={fileList}
                     onChange={onChange}
-               
+
                 >
                     {fileList.length < 5 && '+ Upload'}
                 </Upload>

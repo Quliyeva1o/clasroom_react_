@@ -8,6 +8,7 @@ import {
 } from 'antd';
 import { post } from '../../API';
 import endpoints from '../../API/constants';
+import { Student } from '../../classes/classes';
 
 const StudentRegister = () => {
     const [fileList, setFileList] = useState([]);
@@ -52,25 +53,20 @@ const StudentRegister = () => {
 
     const onFinish = (values) => {
         const uploadedFile = fileList[0];
-        const fileSrc = uploadedFile.url ? uploadedFile.url : URL.createObjectURL(uploadedFile.originFileObj);
-        const updatedValues = {
-            ...values,
-            profileImage: fileSrc
-        };
-
+    
         const reader = new FileReader();
         reader.readAsDataURL(uploadedFile.originFileObj);
         reader.onload = () => {
             const base64Image = reader.result;
-            updatedValues.profileImage = base64Image;
-            post(endpoints.students, updatedValues).then((res) => {
+            const st = new Student(values.fullName, values.username, values.email,values.password, base64Image)
+            console.log("st",st);
+            post(endpoints.students, st).then((res) => {
                 console.log(res.data);
             }).catch((err) => {
                 console.log(err);
             });
         };
 
-        console.log('posted student', updatedValues);
     };
 
     return (
@@ -106,7 +102,7 @@ const StudentRegister = () => {
 
             <Form.Item
                 name="password"
-                label="Password"
+                label="password"
                 rules={[
                     { required: true, message: 'Please input your password!' },
                 ]}

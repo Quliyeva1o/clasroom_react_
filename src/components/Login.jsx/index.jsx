@@ -8,7 +8,6 @@ const Login = ({ setTaskPanel }) => {
     const [tasks, setTasks] = useState([]);
     const [students, setStudents] = useState([]);
     const [teachers, setTeachers] = useState([]);
-    const [loggedinUser, setLoggedinUser] = useState(null); // Define loggedinUser state
 
     useEffect(() => {
         getAll(endpoints.tasks).then((res) => {
@@ -26,8 +25,10 @@ const Login = ({ setTaskPanel }) => {
         const foundStudent = students.find((student) => student.username === values.username);
         if (foundStudent) {
             if (foundStudent.password === values.password) {
-                setLoggedinUser({ id: foundStudent.id, isTeacher: false });
                 alert("Student logged in");
+                setTaskPanel({ id: foundStudent.id, isTeacher:false });
+                localStorage.setItem("loggedinuser", JSON.stringify({ id: foundStudent.id, isTeacher: false }));
+
             } else {
                 alert("Incorrect password for student");
             }
@@ -35,7 +36,6 @@ const Login = ({ setTaskPanel }) => {
             const foundTeacher = teachers.find((teacher) => teacher.username === values.username);
             if (foundTeacher) {
                 if (foundTeacher.password === values.password) {
-                    setLoggedinUser({ id: foundTeacher.id, isTeacher: true });
                     setTaskPanel({ id: foundTeacher.id, isTeacher: true });
                     localStorage.setItem("loggedinuser", JSON.stringify({ id: foundTeacher.id, isTeacher: true }));
                     alert("Teacher logged in");

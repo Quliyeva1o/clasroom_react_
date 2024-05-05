@@ -82,7 +82,7 @@ const LayoutDesign = () => {
                     }}
                     >
 
-                        <MyContent taskPanel={taskPanel} setTaskPanel={setTaskPanel} id={selectedMenu} />
+                        <MyContent taskPanel={taskPanel} setTaskPanel={setTaskPanel} id={selectedMenu} setSelectedMenu={setSelectedMenu}/>
                     </Content>
                 </Layout>
             </Layout>

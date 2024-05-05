@@ -6,6 +6,7 @@ import moment from 'moment';
 import { post } from '../../API/index.js';
 import endpoints from '../../API/constants';
 import { getAll } from '../../API';
+import { Task } from '../../classes/classes.js';
 
 const { RangePicker } = DatePicker;
 
@@ -20,12 +21,8 @@ const AddTaskModal = ({ onTaskAdded }) => {
   };
   const onFinish =  (values) => {
     setOpen(false);
-    console.log(values);
-    let updatedValues = { ...values, deadline: datestring, teacherId: loggedinuser.id, createdAt: moment(new Date()).format('lll'), assignments: [] };
-    console.log(datestring);
-    console.log(updatedValues);
-
-    post(endpoints.tasks, updatedValues)
+   const ts=new Task(values.title,values.description,values.topic,datestring,loggedinuser.id)
+    post(endpoints.tasks, ts)
       .then((res) => {
         console.log(res);
         onTaskAdded(); 
@@ -40,7 +37,6 @@ const AddTaskModal = ({ onTaskAdded }) => {
   };
 
   const onChange = (date, dateString) => {
-    console.log(date, dateString);
     setDateString(moment(dateString).format('lll'))
   };
 
